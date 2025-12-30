@@ -91,7 +91,7 @@ export default function Work() {
             </ToggleGroup>
 
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full sm:w-[200px]">
+              <SelectTrigger className="w-full sm:w-50">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
