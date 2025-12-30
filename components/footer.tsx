@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Github, Linkedin, Twitter, Dribbble } from "lucide-react";
 import { profile } from "@/data/profile";
+import { navigationLinks } from "@/data/navigation";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,24 +21,15 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Navigation</h3>
             <div className="flex flex-col gap-2">
-              <Link
-                href="/"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/work"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Work
-              </Link>
-              <Link
-                href="/about"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                About
-              </Link>
+              {navigationLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 

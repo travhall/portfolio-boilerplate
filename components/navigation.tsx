@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { MouseEvent, useEffect, useState } from "react";
+import { navigationLinks } from "@/data/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface NavigationProps {
   onNavigate?: (path: string, event: MouseEvent<HTMLAnchorElement>) => void;
@@ -15,72 +17,174 @@ export function Navigation({ onNavigate }: NavigationProps) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const links = [
-    { href: "/", label: "Home" },
-    { href: "/work", label: "Work" },
-    { href: "/blog", label: "Blog" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
-  ];
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
+  const handleMobileNavigate = (
+    path: string,
+    event: MouseEvent<HTMLAnchorElement>
+  ) => {
+    setMobileMenuOpen(false);
+    onNavigate?.(path, event);
+  };
 
   return (
-    <nav className="border-b border-border">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-xl font-semibold"
-            onClick={(event) => {
-              onNavigate?.("/", event);
-            }}
-          >
-            AR
-          </Link>
-
-          <div className="flex items-center gap-8">
-            <div className="hidden md:flex items-center gap-6">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={(event) => {
-                    onNavigate?.(link.href, event);
-                  }}
-                  className={`text-sm font-medium transition-colors hover:text-foreground ${
-                    pathname === link.href
-                      ? "text-foreground"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
+    <>
+      <nav className="border-b border-border">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link
+              href="/"
+              className="text-xl font-semibold"
+              onClick={(event) => {
+                onNavigate?.("/", event);
+              }}
             >
-              {mounted ? (
-                theme === "dark" ? (
-                  <Sun className="h-5 w-5" />
+              AR
+            </Link>
+
+            <div className="flex items-center gap-4">
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex items-center gap-6">
+                {navigationLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={(event) => {
+                      onNavigate?.(link.href, event);
+                    }}
+                    className={`text-sm font-medium transition-colors hover:text-foreground ${
+                      pathname === link.href
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Theme Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+              >
+                {mounted ? (
+                  theme === "dark" ? (
+                    <Sun className="h-5 w-5" />
+                  ) : (
+                    <Moon className="h-5 w-5" />
+                  )
                 ) : (
-                  <Moon className="h-5 w-5" />
-                )
-              ) : (
-                <span className="h-5 w-5" aria-hidden />
-              )}
-            </Button>
+                  <span className="h-5 w-5" aria-hidden />
+                )}
+              </Button>
+
+              {/* Mobile Menu Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile Menu Overlay & Panel */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/80 md:hidden"
+            />
+
+            {/* Mobile Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-75 bg-background border-l border-border md:hidden"
+            >
+              <div className="flex flex-col h-full">
+                {/* Mobile Menu Header */}
+                <div className="flex items-center justify-between p-6 border-b border-border">
+                  <h2 className="text-lg font-semibold">Menu</h2>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-label="Close menu"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+
+                {/* Mobile Menu Links */}
+                <nav className="flex flex-col gap-2 p-6">
+                  {navigationLinks.map((link, index) => (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        duration: 0.3,
+                        delay: index * 0.08,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={(event) => {
+                          handleMobileNavigate(link.href, event);
+                        }}
+                        className={`text-lg font-medium transition-colors hover:text-foreground py-3 block ${
+                          pathname === link.href
+                            ? "text-foreground"
+                            : "text-muted-foreground"
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  ))}
+                </nav>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
