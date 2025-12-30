@@ -120,7 +120,7 @@ export function BlogClient({ posts, categories }: BlogClientProps) {
               <SelectTrigger className="w-full sm:w-50">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background">
                 <SelectItem value="date-desc">Newest First</SelectItem>
                 <SelectItem value="date-asc">Oldest First</SelectItem>
                 <SelectItem value="title-asc">Title (A-Z)</SelectItem>

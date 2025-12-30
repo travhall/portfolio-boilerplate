@@ -40,7 +40,7 @@ export function Footer() {
                 href={profile.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
                 aria-label="GitHub"
               >
                 <Github className="h-5 w-5" />
@@ -49,7 +49,7 @@ export function Footer() {
                 href={profile.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
@@ -58,7 +58,7 @@ export function Footer() {
                 href={profile.social.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
                 aria-label="Twitter"
               >
                 <Twitter className="h-5 w-5" />
@@ -67,7 +67,7 @@ export function Footer() {
                 href={profile.social.dribbble}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
                 aria-label="Dribbble"
               >
                 <Dribbble className="h-5 w-5" />

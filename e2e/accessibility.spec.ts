@@ -14,6 +14,29 @@ test.describe("Accessibility", () => {
     await expect(focusedElement).toBeVisible();
   });
 
+  test("skip link should be focusable and move focus to main", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.keyboard.press("Tab");
+    const skipLink = page.getByRole("link", { name: "Skip to main content" });
+    await expect(skipLink).toBeVisible();
+    await skipLink.press("Enter");
+    await expect(page.locator("main#main-content")).toBeFocused();
+  });
+
+  test("mobile menu traps focus and closes with Escape", async ({ page }) => {
+    await page.goto("/");
+    const menuToggle = page.getByRole("button", { name: "Toggle menu" });
+    await menuToggle.click();
+    const mobileMenu = page.locator("#mobile-menu");
+    await expect(mobileMenu).toBeVisible();
+    const firstLink = mobileMenu.locator("a").first();
+    await expect(firstLink).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(menuToggle).toBeFocused();
+  });
+
   test("work page filters should be keyboard accessible", async ({ page }) => {
     await page.goto("/work");
 

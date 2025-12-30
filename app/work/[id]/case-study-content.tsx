@@ -483,11 +483,14 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
                     key={index}
                     className="md:basis-1/2 lg:basis-1/3"
                   >
-                    <div className="aspect-video bg-muted overflow-hidden rounded-lg">
-                      <img
+                    <div className="aspect-video bg-muted overflow-hidden rounded-lg relative">
+                      <Image
                         src={image}
-                        alt={`${study.title} - Image ${index + 1}`}
-                        className="object-cover w-full h-full"
+                        alt={`${study.title} gallery image ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        loading="lazy"
                       />
                     </div>
                   </CarouselItem>

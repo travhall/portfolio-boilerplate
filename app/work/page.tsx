@@ -99,7 +99,7 @@ export default function Work() {
               <SelectTrigger className="w-full sm:w-50">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background">
                 <SelectItem value="year-desc">Newest First</SelectItem>
                 <SelectItem value="year-asc">Oldest First</SelectItem>
                 <SelectItem value="title-asc">Title (A-Z)</SelectItem>
@@ -109,7 +109,11 @@ export default function Work() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-sm" aria-live="polite" aria-atomic="true">
+        <div
+          className="flex items-center gap-2 text-sm"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <span className="text-muted-foreground">
             Showing {filteredAndSortedStudies.length}{" "}
             {filteredAndSortedStudies.length === 1 ? "project" : "projects"}

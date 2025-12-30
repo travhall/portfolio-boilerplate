@@ -19,6 +19,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const [isVisible, setIsVisible] = useState(true);
   const [waitingForEnter, setWaitingForEnter] = useState(false);
   const pendingPathRef = useRef<string | null>(null);
+  const mainRef = useRef<HTMLElement>(null);
 
   const startTransition = useCallback<StartRouteTransition>(
     (nextPath, event) => {
@@ -88,11 +89,37 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     }
   };
 
+  useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      mainRef.current?.focus();
+    });
+    return () => cancelAnimationFrame(id);
+  }, [isVisible, displayedPath]);
+
   return (
     <>
       <RouteTransitionProvider value={startTransition}>
+        <a
+          href="#main-content"
+          className="fixed left-4 top-4 z-50 -translate-y-20 rounded-md bg-background px-4 py-2 font-semibold text-foreground shadow focus-visible:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          onClick={(event) => {
+            event.preventDefault();
+            mainRef.current?.focus();
+          }}
+        >
+          Skip to main content
+        </a>
         <Navigation onNavigate={startTransition} />
-        <main className="relative min-h-screen overflow-hidden">
+        <main
+          id="main-content"
+          ref={mainRef}
+          className="relative min-h-screen overflow-hidden"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <AnimatePresence
             mode="wait"
             initial={false}
