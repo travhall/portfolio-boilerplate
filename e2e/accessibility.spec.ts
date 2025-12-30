@@ -26,6 +26,7 @@ test.describe("Accessibility", () => {
   });
 
   test("mobile menu traps focus and closes with Escape", async ({ page }) => {
+    await page.setViewportSize({ width: 480, height: 900 });
     await page.goto("/");
     const menuToggle = page.getByRole("button", { name: "Toggle menu" });
     await menuToggle.click();

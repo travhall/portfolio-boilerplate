@@ -116,6 +116,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         <main
           id="main-content"
           ref={mainRef}
+          tabIndex={-1}
           className="relative min-h-screen overflow-hidden"
           aria-live="polite"
           aria-atomic="true"

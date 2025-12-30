@@ -6,7 +6,7 @@ test.describe("Work Page Filtering", () => {
   });
 
   test("should display all projects by default", async ({ page }) => {
-    const projectCount = await page.locator('[role="link"]').count();
+    const projectCount = await page.locator('a[href^="/work/"]').count();
     expect(projectCount).toBeGreaterThan(0);
   });
 
@@ -20,9 +20,7 @@ test.describe("Work Page Filtering", () => {
       await categoryButton.click();
 
       // Verify the filter is applied
-      await expect(
-        page.getByText(/showing \d+ project/i)
-      ).toBeVisible();
+      await expect(page.getByText(/showing \d+ project/i)).toBeVisible();
     }
   });
 
@@ -34,9 +32,7 @@ test.describe("Work Page Filtering", () => {
     await page.getByRole("option", { name: /title \(a-z\)/i }).click();
 
     // Verify sorting is applied (check that projects are displayed)
-    await expect(
-      page.getByText(/showing \d+ project/i)
-    ).toBeVisible();
+    await expect(page.getByText(/showing \d+ project/i)).toBeVisible();
   });
 
   test("should navigate to case study", async ({ page }) => {
