@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { Check, Copy, FileJson } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { Check, Copy, FileJson } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 interface ComponentSectionProps {
   id: string;
@@ -56,11 +56,11 @@ export function ComponentSection({
   }, [id, hasTracked]);
 
   const trackComponentView = async (componentName: string) => {
-    console.log('Component viewed:', componentName);
+    console.log("Component viewed:", componentName);
   };
 
   const trackCopy = async () => {
-    console.log('Component code copied:', id);
+    console.log("Component code copied:", id);
   };
 
   const handleCopyJsx = async () => {
@@ -75,7 +75,7 @@ export function ComponentSection({
     const config = {
       component: title,
       code: code,
-      imports: imports || '',
+      imports: imports || "",
     };
     await navigator.clipboard.writeText(JSON.stringify(config, null, 2));
     setCopiedConfig(true);
@@ -102,7 +102,7 @@ export function ComponentSection({
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="rounded-lg border bg-background p-8">
-            <div className="flex flex-wrap items-center justify-center gap-4 min-h-[120px]">
+            <div className="flex flex-wrap items-center justify-center gap-4 min-h-30">
               {children}
             </div>
           </div>
