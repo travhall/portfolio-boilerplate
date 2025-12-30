@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   ArrowLeft,
   TrendingUp,
@@ -45,6 +44,7 @@ import {
 } from "@/components/ui/tooltip";
 import { CaseStudy } from "@/data/case-studies";
 import { useState, useEffect } from "react";
+import { TransitionLink } from "@/components/transition-link";
 
 interface CaseStudyContentProps {
   study: CaseStudy;
@@ -67,10 +67,10 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
       <div className="border-b border-border">
         <div className="container mx-auto px-6 py-8">
           <Button asChild variant="ghost" size="sm" className="mb-6">
-            <Link href="/work">
+            <TransitionLink href="/work">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Work
-            </Link>
+            </TransitionLink>
           </Button>
 
           <div className="max-w-4xl">
@@ -127,9 +127,7 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
                       </div>
                       <Separator />
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium">
-                          Improvement
-                        </span>
+                        <span className="text-xs font-medium">Improvement</span>
                         <div className="flex items-center gap-1">
                           {metric.improvement.startsWith("+") ? (
                             <TrendingUp className="h-3 w-3 text-green-600" />
@@ -168,9 +166,7 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               <div className="md:col-span-2 space-y-12">
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Project Overview
-                  </h2>
+                  <h2 className="text-2xl font-bold mb-4">Project Overview</h2>
                   <p className="text-lg text-muted-foreground leading-relaxed">
                     {study.description}
                   </p>
@@ -198,8 +194,7 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
                     {study.highlights.map((highlight, index) => (
                       <AccordionItem key={index} value={`item-${index}`}>
                         <AccordionTrigger className="text-left">
-                          {highlight.split(":")[0] ||
-                            `Highlight ${index + 1}`}
+                          {highlight.split(":")[0] || `Highlight ${index + 1}`}
                         </AccordionTrigger>
                         <AccordionContent className="text-muted-foreground">
                           {highlight}
@@ -210,9 +205,7 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Outcome & Impact
-                  </h2>
+                  <h2 className="text-2xl font-bold mb-4">Outcome & Impact</h2>
                   <p className="text-muted-foreground leading-relaxed mb-6">
                     {study.outcome}
                   </p>
@@ -282,16 +275,12 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
                   </CardHeader>
                   <CardContent className="space-y-4 text-sm">
                     <div>
-                      <div className="text-muted-foreground mb-1">
-                        Duration
-                      </div>
+                      <div className="text-muted-foreground mb-1">Duration</div>
                       <div className="font-medium">{study.duration}</div>
                     </div>
                     <Separator />
                     <div>
-                      <div className="text-muted-foreground mb-1">
-                        Category
-                      </div>
+                      <div className="text-muted-foreground mb-1">Category</div>
                       <div className="font-medium">{study.category}</div>
                     </div>
                     <Separator />
@@ -377,9 +366,9 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
               ) : (
                 <Alert>
                   <AlertDescription>
-                    This project followed a collaborative design and
-                    development process, with iterative feedback loops and
-                    continuous stakeholder engagement.
+                    This project followed a collaborative design and development
+                    process, with iterative feedback loops and continuous
+                    stakeholder engagement.
                   </AlertDescription>
                 </Alert>
               )}
@@ -395,10 +384,7 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
                     <Card key={index}>
                       <CardContent className="flex items-center gap-4 p-6">
                         <Avatar className="h-16 w-16">
-                          <AvatarImage
-                            src={member.avatar}
-                            alt={member.name}
-                          />
+                          <AvatarImage src={member.avatar} alt={member.name} />
                           <AvatarFallback>
                             {member.name
                               .split(" ")
@@ -474,8 +460,8 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
               ) : (
                 <Alert>
                   <AlertDescription>
-                    Client testimonials for this project are being collected
-                    and will be available soon.
+                    Client testimonials for this project are being collected and
+                    will be available soon.
                   </AlertDescription>
                 </Alert>
               )}
@@ -511,18 +497,16 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
 
         <Card className="bg-card">
           <CardContent className="p-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Interested in My Work?
-            </h2>
+            <h2 className="text-3xl font-bold mb-4">Interested in My Work?</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
               Let's discuss how I can help bring your ideas to life.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg">
-                <Link href="/contact">Get In Touch</Link>
+                <TransitionLink href="/contact">Get In Touch</TransitionLink>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/work">View More Work</Link>
+                <TransitionLink href="/work">View More Work</TransitionLink>
               </Button>
             </div>
           </CardContent>

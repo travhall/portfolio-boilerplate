@@ -6,6 +6,10 @@ import { Footer } from "@/components/footer";
 import { AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { PageTransition } from "@/components/page-transition";
+import {
+  RouteTransitionProvider,
+  StartRouteTransition,
+} from "@/components/route-transition-context";
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -16,8 +20,8 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const [waitingForEnter, setWaitingForEnter] = useState(false);
   const pendingPathRef = useRef<string | null>(null);
 
-  const handleNavigate = useCallback(
-    (nextPath: string, event?: MouseEvent<HTMLAnchorElement>) => {
+  const startTransition = useCallback<StartRouteTransition>(
+    (nextPath, event) => {
       if (
         event?.defaultPrevented ||
         event?.button !== 0 ||
@@ -26,7 +30,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         event?.altKey ||
         event?.shiftKey
       ) {
-        return;
+        return false;
       }
 
       if (
@@ -35,12 +39,13 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         waitingForEnter ||
         !isVisible
       ) {
-        return;
+        return false;
       }
 
       event?.preventDefault();
       pendingPathRef.current = nextPath;
       setIsVisible(false);
+      return true;
     },
     [displayedPath, waitingForEnter, isVisible]
   );
@@ -85,21 +90,23 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Navigation onNavigate={handleNavigate} />
-      <main className="relative min-h-screen overflow-hidden">
-        <AnimatePresence
-          mode="wait"
-          initial={false}
-          onExitComplete={handleExitComplete}
-        >
-          {isVisible && (
-            <PageTransition key={displayedPath}>
-              {displayedChildren}
-            </PageTransition>
-          )}
-        </AnimatePresence>
-      </main>
-      <Footer />
+      <RouteTransitionProvider value={startTransition}>
+        <Navigation onNavigate={startTransition} />
+        <main className="relative min-h-screen overflow-hidden">
+          <AnimatePresence
+            mode="wait"
+            initial={false}
+            onExitComplete={handleExitComplete}
+          >
+            {isVisible && (
+              <PageTransition key={displayedPath}>
+                {displayedChildren}
+              </PageTransition>
+            )}
+          </AnimatePresence>
+        </main>
+        <Footer />
+      </RouteTransitionProvider>
     </>
   );
 }
