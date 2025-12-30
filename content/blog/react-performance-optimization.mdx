@@ -1,0 +1,317 @@
+---
+title: "React Performance Optimization: Practical Tips"
+description: "Learn proven techniques to optimize your React applications, from code splitting to memoization and beyond."
+date: "2024-02-28"
+author: "Alex Rivera"
+category: "React"
+tags: ["react", "performance", "typescript", "optimization"]
+image: "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg"
+published: true
+---
+
+Performance matters. A slow app frustrates users and hurts conversions. Let's explore practical React optimization techniques that actually make a difference.
+
+## Measure First, Optimize Second
+
+Before optimizing, you need to know what's slow. Use these tools:
+
+- **React DevTools Profiler** - Identify slow renders
+- **Chrome DevTools Performance** - Find JavaScript bottlenecks
+- **Lighthouse** - Overall performance score
+- **Web Vitals** - Core Web Vitals metrics
+
+> Don't guess—measure. Premature optimization wastes time on problems that don't exist.
+
+## 1. Code Splitting with React.lazy()
+
+Load components only when needed:
+
+```typescript
+import { lazy, Suspense } from 'react';
+import { Skeleton } from './components/ui/skeleton';
+
+// Before: All code loaded upfront
+// import HeavyChart from './components/HeavyChart';
+
+// After: Loaded only when needed
+const HeavyChart = lazy(() => import('./components/HeavyChart'));
+
+function Dashboard() {
+  return (
+    <Suspense fallback={<Skeleton className="h-96" />}>
+      <HeavyChart data={data} />
+    </Suspense>
+  );
+}
+```
+
+**Impact:** Reduces initial bundle size by 40-60% in typical apps.
+
+## 2. Memoization: useMemo and useCallback
+
+Prevent unnecessary recalculations and re-renders.
+
+### useMemo for Expensive Calculations
+
+```typescript
+import { useMemo } from 'react';
+
+function ProductList({ products, filters }: Props) {
+  // Bad: Recalculates on every render
+  const filteredProducts = products.filter(p =>
+    p.category === filters.category
+  );
+
+  // Good: Only recalculates when dependencies change
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => p.category === filters.category);
+  }, [products, filters.category]);
+
+  return <div>{/* ... */}</div>;
+}
+```
+
+### useCallback for Event Handlers
+
+```typescript
+import { useCallback } from 'react';
+
+function Parent() {
+  // Bad: New function on every render
+  const handleClick = (id: string) => {
+    console.log(id);
+  };
+
+  // Good: Same function reference
+  const handleClick = useCallback((id: string) => {
+    console.log(id);
+  }, []);
+
+  return <Child onClick={handleClick} />;
+}
+```
+
+## 3. React.memo for Component Memoization
+
+Prevent re-renders when props haven't changed:
+
+```typescript
+import { memo } from 'react';
+
+interface CardProps {
+  title: string;
+  description: string;
+}
+
+// Without memo: Re-renders whenever parent re-renders
+export function Card({ title, description }: CardProps) {
+  return (
+    <div>
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+  );
+}
+
+// With memo: Only re-renders when props change
+export const Card = memo(function Card({ title, description }: CardProps) {
+  return (
+    <div>
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+  );
+});
+```
+
+## 4. Virtualization for Long Lists
+
+Render only visible items:
+
+```typescript
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef } from 'react';
+
+function VirtualList({ items }: { items: string[] }) {
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const virtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 50,
+  });
+
+  return (
+    <div ref={parentRef} style={{ height: '400px', overflow: 'auto' }}>
+      <div
+        style={{
+          height: `${virtualizer.getTotalSize()}px`,
+          position: 'relative',
+        }}
+      >
+        {virtualizer.getVirtualItems().map((virtualItem) => (
+          <div
+            key={virtualItem.key}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: `${virtualItem.size}px`,
+              transform: `translateY(${virtualItem.start}px)`,
+            }}
+          >
+            {items[virtualItem.index]}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## 5. Debouncing and Throttling
+
+Control how often expensive operations run:
+
+```typescript
+import { useState, useCallback } from 'react';
+import { debounce } from 'lodash';
+
+function SearchBox() {
+  const [results, setResults] = useState([]);
+
+  // Bad: API call on every keystroke
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    fetch(`/api/search?q=${e.target.value}`)
+      .then(res => res.json())
+      .then(setResults);
+  };
+
+  // Good: API call only after user stops typing
+  const handleChange = useCallback(
+    debounce((value: string) => {
+      fetch(`/api/search?q=${value}`)
+        .then(res => res.json())
+        .then(setResults);
+    }, 300),
+    []
+  );
+
+  return <input onChange={(e) => handleChange(e.target.value)} />;
+}
+```
+
+## 6. Key Prop Optimization
+
+Use stable, unique keys for lists:
+
+```typescript
+// Bad: Index as key (causes issues when reordering)
+{items.map((item, index) => (
+  <Item key={index} {...item} />
+))}
+
+// Good: Unique ID as key
+{items.map((item) => (
+  <Item key={item.id} {...item} />
+))}
+```
+
+## 7. Avoid Inline Objects and Functions
+
+```typescript
+function Parent() {
+  // Bad: New object on every render
+  return <Child style={{ margin: 10 }} />;
+
+  // Good: Stable reference
+  const style = { margin: 10 };
+  return <Child style={style} />;
+}
+```
+
+## 8. Use Production Builds
+
+Always deploy production builds:
+
+```bash
+# Development (slow, includes debugging)
+npm run dev
+
+# Production (optimized, minified)
+npm run build
+npm start
+```
+
+**Production builds are 3-5x faster** than development builds.
+
+## Common Performance Anti-Patterns
+
+### 1. Unnecessary State
+
+```typescript
+// Bad: Derived state that recalculates needlessly
+const [items, setItems] = useState([]);
+const [count, setCount] = useState(0);
+
+useEffect(() => {
+  setCount(items.length); // Unnecessary!
+}, [items]);
+
+// Good: Calculated value
+const count = items.length;
+```
+
+### 2. Props Drilling
+
+```typescript
+// Bad: Passing through many levels
+<App>
+  <Layout user={user}>
+    <Sidebar user={user}>
+      <UserMenu user={user} />
+    </Sidebar>
+  </Layout>
+</App>
+
+// Good: Context for widely-used data
+const UserContext = createContext<User | null>(null);
+
+function App() {
+  return (
+    <UserContext.Provider value={user}>
+      <Layout>
+        <Sidebar>
+          <UserMenu />
+        </Sidebar>
+      </Layout>
+    </UserContext.Provider>
+  );
+}
+```
+
+## Performance Checklist
+
+- [ ] Code split routes and heavy components
+- [ ] Memoize expensive calculations
+- [ ] Use React.memo for pure components
+- [ ] Virtualize long lists
+- [ ] Debounce search and autocomplete
+- [ ] Optimize images (use Next.js Image)
+- [ ] Lazy load images below the fold
+- [ ] Use production builds
+- [ ] Monitor bundle size
+- [ ] Profile with React DevTools
+
+## Conclusion
+
+React performance optimization is about making smart choices:
+
+1. **Measure** before optimizing
+2. **Focus** on user-perceived performance
+3. **Start** with code splitting and lazy loading
+4. **Use** memoization thoughtfully (don't overdo it)
+5. **Monitor** performance metrics continuously
+
+Remember: A fast app is a successful app. Your users will thank you.

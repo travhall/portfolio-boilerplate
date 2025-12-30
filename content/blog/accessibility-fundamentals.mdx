@@ -1,0 +1,255 @@
+---
+title: "Web Accessibility Fundamentals: A Developer's Guide"
+description: "Learn the essential principles of web accessibility and how to implement them in your projects for a more inclusive web."
+date: "2024-03-10"
+author: "Alex Rivera"
+category: "Accessibility"
+tags: ["accessibility", "a11y", "wcag", "inclusive design"]
+image: "https://images.pexels.com/photos/6804069/pexels-photo-6804069.jpeg"
+published: true
+---
+
+Building accessible websites isn't just the right thing to do—it's essential for reaching all users and often required by law. Let's explore the fundamentals every developer should know.
+
+## What is Web Accessibility?
+
+Web accessibility (often abbreviated as a11y) means ensuring that websites, tools, and technologies are designed and developed so that people with disabilities can use them.
+
+### Who Benefits?
+
+- **People with visual impairments** (using screen readers)
+- **People with motor disabilities** (using keyboard navigation)
+- **People with hearing impairments** (needing captions)
+- **People with cognitive disabilities** (needing clear, simple interfaces)
+- **Everyone** (clear, usable interfaces benefit all users)
+
+## The Four Principles: POUR
+
+The Web Content Accessibility Guidelines (WCAG) are built on four principles:
+
+### 1. **Perceivable**
+
+Information must be presentable to users in ways they can perceive.
+
+**Example - Alt Text:**
+
+```jsx
+// Bad
+<img src="chart.png" />
+
+// Good
+<img
+  src="chart.png"
+  alt="Bar chart showing 50% increase in sales from 2023 to 2024"
+/>
+
+// Decorative images
+<img src="decoration.png" alt="" />
+```
+
+### 2. **Operable**
+
+User interface components must be operable by everyone.
+
+**Example - Keyboard Navigation:**
+
+```jsx
+// Bad - div won't receive focus
+<div onClick={handleClick}>Click me</div>
+
+// Good - button is keyboard accessible
+<button onClick={handleClick}>Click me</button>
+
+// Also good - div with proper attributes
+<div
+  role="button"
+  tabIndex={0}
+  onClick={handleClick}
+  onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+>
+  Click me
+</div>
+```
+
+### 3. **Understandable**
+
+Information and operation must be understandable.
+
+```jsx
+// Bad - unclear error
+<span>Invalid</span>
+
+// Good - specific, helpful error
+<span id="email-error" role="alert">
+  Please enter a valid email address (example: user@domain.com)
+</span>
+```
+
+### 4. **Robust**
+
+Content must be robust enough to work with current and future technologies.
+
+Use semantic HTML and valid ARIA attributes to ensure compatibility with assistive technologies.
+
+## Essential Accessibility Techniques
+
+### Semantic HTML
+
+Use the right element for the job:
+
+```html
+<!-- Bad -->
+<div class="header">
+  <div class="nav">
+    <span onclick="navigate()">Home</span>
+  </div>
+</div>
+
+<!-- Good -->
+<header>
+  <nav>
+    <a href="/">Home</a>
+  </nav>
+</header>
+```
+
+### Focus Management
+
+Ensure keyboard users can navigate your site:
+
+```css
+/* Bad - removing focus outline */
+*:focus {
+  outline: none;
+}
+
+/* Good - custom focus indicator */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+```
+
+### ARIA Attributes
+
+Use ARIA to enhance accessibility when HTML alone isn't enough:
+
+```jsx
+// Accessible dropdown menu
+<button
+  aria-expanded={isOpen}
+  aria-haspopup="true"
+  aria-controls="menu"
+>
+  Menu
+</button>
+<ul id="menu" role="menu" hidden={!isOpen}>
+  <li role="menuitem">
+    <a href="/about">About</a>
+  </li>
+</ul>
+```
+
+### Form Accessibility
+
+Make forms usable for everyone:
+
+```jsx
+<form>
+  <label htmlFor="email">
+    Email Address
+    <span aria-label="required">*</span>
+  </label>
+  <input
+    id="email"
+    type="email"
+    required
+    aria-required="true"
+    aria-describedby="email-help email-error"
+  />
+  <span id="email-help" className="help-text">
+    We'll never share your email
+  </span>
+  {error && (
+    <span id="email-error" role="alert" className="error">
+      {error}
+    </span>
+  )}
+</form>
+```
+
+## Common Accessibility Mistakes
+
+### 1. Low Color Contrast
+
+```css
+/* Bad - 2.5:1 contrast ratio */
+color: #777;
+background: #fff;
+
+/* Good - 4.5:1 contrast ratio (WCAG AA) */
+color: #595959;
+background: #fff;
+```
+
+### 2. Non-Descriptive Link Text
+
+```html
+<!-- Bad -->
+<a href="/article">Click here</a> to read more
+
+<!-- Good -->
+<a href="/article">Read more about web accessibility</a>
+```
+
+### 3. Missing Skip Links
+
+```html
+<!-- Add at the top of your page -->
+<a href="#main-content" class="skip-link">
+  Skip to main content
+</a>
+
+<main id="main-content">
+  <!-- Your content -->
+</main>
+```
+
+## Testing for Accessibility
+
+### Automated Tools
+
+1. **Lighthouse** - Built into Chrome DevTools
+2. **axe DevTools** - Browser extension
+3. **WAVE** - Web accessibility evaluation tool
+
+### Manual Testing
+
+1. **Keyboard Navigation** - Can you use the site with only a keyboard?
+2. **Screen Reader** - Test with VoiceOver (Mac), NVDA (Windows), or JAWS
+3. **Zoom** - Does your site work at 200% zoom?
+4. **Color Blindness** - Use simulators to check color reliance
+
+## Quick Wins
+
+Start with these easy improvements:
+
+1. Add alt text to all images
+2. Use semantic HTML elements
+3. Ensure proper heading hierarchy (h1 → h2 → h3)
+4. Add labels to all form inputs
+5. Maintain color contrast ratios
+6. Make interactive elements keyboard accessible
+
+## Resources
+
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [A11y Project Checklist](https://www.a11yproject.com/checklist/)
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- [Inclusive Components](https://inclusive-components.design/)
+
+## Conclusion
+
+Accessibility isn't a feature you add at the end—it's a fundamental aspect of good web development. By following these principles and techniques, you'll create better experiences for all users.
+
+Remember: **Accessible design is good design.**

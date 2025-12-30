@@ -1,0 +1,194 @@
+---
+title: "Modern CSS Techniques for 2024"
+description: "Explore the latest CSS features including container queries, :has() selector, and CSS layers that are changing how we write styles."
+date: "2024-02-20"
+author: "Alex Rivera"
+category: "CSS"
+tags: ["css", "web development", "frontend", "responsive design"]
+image: "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+published: true
+---
+
+CSS has evolved dramatically in recent years. Let's explore some modern techniques that are changing how we build responsive, maintainable websites.
+
+## Container Queries: The Game Changer
+
+For years, we've relied on media queries to create responsive designs. But container queries take it to the next level by allowing components to respond to their container's size, not just the viewport.
+
+### Old Way (Media Queries)
+
+```css
+.card {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .card {
+    display: flex;
+  }
+}
+```
+
+### New Way (Container Queries)
+
+```css
+.card-container {
+  container-type: inline-size;
+}
+
+.card {
+  display: block;
+}
+
+@container (min-width: 500px) {
+  .card {
+    display: flex;
+  }
+}
+```
+
+The difference? The card now responds to its container's width, not the viewport. This makes components truly reusable across different contexts.
+
+## The :has() Selector
+
+Also known as the "parent selector," `:has()` allows you to style an element based on its children. This was impossible in CSS for years!
+
+### Real-World Example
+
+```css
+/* Style a card differently if it contains an image */
+.card:has(img) {
+  padding: 0;
+}
+
+/* Highlight a form with errors */
+form:has(.error) {
+  border-color: red;
+}
+
+/* Style based on checkbox state */
+.sidebar:has(#menu-toggle:checked) {
+  transform: translateX(0);
+}
+```
+
+## CSS Layers (@layer)
+
+Manage your CSS specificity with layers, making it easier to organize and override styles.
+
+```css
+@layer reset, base, components, utilities;
+
+@layer reset {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer components {
+  .button {
+    /* Component styles */
+  }
+}
+
+@layer utilities {
+  .mt-4 {
+    margin-top: 1rem;
+  }
+}
+```
+
+Layers cascade in the order they're defined, regardless of specificity!
+
+## Modern Color Spaces
+
+Say goodbye to hex codes and hello to more powerful color systems:
+
+### OKLch - Perceptually Uniform Colors
+
+```css
+:root {
+  --primary: oklch(65% 0.2 250);
+  --primary-light: oklch(75% 0.15 250);
+  --primary-dark: oklch(55% 0.25 250);
+}
+```
+
+Benefits:
+- Perceptually uniform (equal lightness looks equal)
+- Better for color manipulation
+- Wider color gamut
+
+## Logical Properties
+
+Write styles that work in any text direction:
+
+```css
+/* Old way */
+.element {
+  margin-left: 1rem;
+  border-right: 1px solid gray;
+}
+
+/* New way - works with RTL languages */
+.element {
+  margin-inline-start: 1rem;
+  border-inline-end: 1px solid gray;
+}
+```
+
+## Subgrid
+
+Create truly aligned layouts across nested grids:
+
+```css
+.parent {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.child {
+  display: grid;
+  grid-template-columns: subgrid; /* Inherits parent columns! */
+}
+```
+
+## Cascade Layers for Third-Party CSS
+
+Manage third-party CSS without fighting specificity:
+
+```css
+@import url('third-party.css') layer(third-party);
+
+@layer third-party, my-styles;
+
+@layer my-styles {
+  /* Your styles always win, regardless of specificity */
+}
+```
+
+## Best Practices
+
+1. **Progressive Enhancement** - Use feature queries
+2. **Browser Support** - Check [Can I Use](https://caniuse.com)
+3. **Fallbacks** - Provide alternatives for older browsers
+4. **Testing** - Test in multiple browsers and devices
+
+## Feature Detection
+
+```css
+@supports (container-type: inline-size) {
+  /* Container query styles */
+}
+
+@supports selector(:has(*)) {
+  /* :has() selector styles */
+}
+```
+
+## Conclusion
+
+Modern CSS is more powerful than ever. These techniques allow us to write cleaner, more maintainable code that adapts better to different contexts and user needs.
+
+The best part? Most of these features have excellent browser support in 2024. Start experimenting today!
