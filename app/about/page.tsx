@@ -1,11 +1,24 @@
-"use client";
-
-import Link from "next/link";
+import { Metadata } from "next";
 import { Mail, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { TransitionLink } from "@/components/transition-link";
 import { profile } from "@/data/profile";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: `Learn more about ${profile.name}, ${profile.title}. ${profile.bio.slice(0, 100)}...`,
+  openGraph: {
+    title: `About ${profile.name}`,
+    description: profile.bio,
+  },
+  twitter: {
+    card: "summary",
+    title: `About ${profile.name}`,
+    description: profile.bio,
+  },
+};
 
 export default function About() {
   return (
@@ -81,7 +94,7 @@ export default function About() {
                 opportunities to be part of your vision.
               </p>
               <Button asChild size="lg">
-                <Link href="/contact">Get In Touch</Link>
+                <TransitionLink href="/contact">Get In Touch</TransitionLink>
               </Button>
             </CardContent>
           </Card>

@@ -1,9 +1,23 @@
-"use client";
-
+import { Metadata } from "next";
 import { contactInfo } from "@/data/contact";
+import { profile } from "@/data/profile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Linkedin, Twitter, Github, MapPin, Clock } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: `Get in touch with ${profile.name}. ${contactInfo.subtitle}`,
+  openGraph: {
+    title: `Contact ${profile.name}`,
+    description: contactInfo.subtitle,
+  },
+  twitter: {
+    card: "summary",
+    title: `Contact ${profile.name}`,
+    description: contactInfo.subtitle,
+  },
+};
 
 const iconMap = {
   Mail,

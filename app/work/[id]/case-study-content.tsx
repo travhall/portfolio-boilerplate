@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   ArrowLeft,
   TrendingUp,
@@ -86,11 +87,14 @@ export function CaseStudyContent({ study }: CaseStudyContentProps) {
       </div>
 
       {study.images?.hero && (
-        <div className="w-full aspect-video bg-muted overflow-hidden">
-          <img
+        <div className="w-full aspect-video bg-muted overflow-hidden relative">
+          <Image
             src={study.images.hero}
             alt={study.title}
-            className="object-cover w-full h-full"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
           />
         </div>
       )}

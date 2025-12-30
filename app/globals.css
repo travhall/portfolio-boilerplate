@@ -103,4 +103,25 @@
   h6 {
     font-family: var(--font-heading);
   }
+
+  /* Enhanced focus styles for accessibility */
+  *:focus-visible {
+    outline: 2px solid oklch(var(--primary));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Focus styles for interactive elements */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  [role="link"]:focus-visible {
+    outline: 2px solid oklch(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Ensure links are understandable */
+  a {
+    text-decoration-skip-ink: auto;
+  }
 }

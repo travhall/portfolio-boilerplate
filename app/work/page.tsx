@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowRight, Filter } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -82,10 +83,14 @@ export default function Work() {
                 <ToggleGroupItem
                   key={category}
                   value={category}
-                  aria-label={`Filter by ${category}`}
+                  aria-label={
+                    category === "all"
+                      ? "Show all projects"
+                      : `Filter by ${category} projects`
+                  }
                   className="capitalize"
                 >
-                  {category}
+                  {category === "all" ? "All Projects" : category}
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
@@ -104,7 +109,7 @@ export default function Work() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm" aria-live="polite" aria-atomic="true">
           <span className="text-muted-foreground">
             Showing {filteredAndSortedStudies.length}{" "}
             {filteredAndSortedStudies.length === 1 ? "project" : "projects"}
@@ -123,10 +128,12 @@ export default function Work() {
             <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full">
               <div className="aspect-video bg-muted relative overflow-hidden">
                 {study.images?.hero && (
-                  <img
+                  <Image
                     src={study.images.hero}
                     alt={study.title}
-                    className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 )}
               </div>

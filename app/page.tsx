@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,10 +48,12 @@ export default function Home() {
               <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-video bg-muted relative overflow-hidden">
                   {study.images?.hero && (
-                    <img
+                    <Image
                       src={study.images.hero}
                       alt={study.title}
-                      className="object-cover w-full h-full"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   )}
                 </div>

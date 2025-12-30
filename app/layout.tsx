@@ -31,8 +31,46 @@ const themeInitializer = `
 `;
 
 export const metadata: Metadata = {
-  title: `${profile.name} - ${profile.title}`,
+  title: {
+    default: `${profile.name} - ${profile.title}`,
+    template: `%s | ${profile.name}`,
+  },
   description: profile.tagline,
+  keywords: [
+    ...profile.skills,
+    "portfolio",
+    "UX design",
+    "UI development",
+    "web development",
+    "design systems",
+  ],
+  authors: [{ name: profile.name, url: profile.social.github }],
+  creator: profile.name,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    title: `${profile.name} - ${profile.title}`,
+    description: profile.tagline,
+    siteName: `${profile.name}'s Portfolio`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${profile.name} - ${profile.title}`,
+    description: profile.tagline,
+    creator: "@alexrivera",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
