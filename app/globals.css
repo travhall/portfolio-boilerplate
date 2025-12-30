@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  --radius: 0.5rem;
+
+  --color-background: oklch(var(--background));
+  --color-foreground: oklch(var(--foreground));
+  --color-card: oklch(var(--card));
+  --color-card-foreground: oklch(var(--card-foreground));
+  --color-primary: oklch(var(--primary));
+  --color-primary-foreground: oklch(var(--primary-foreground));
+  --color-secondary: oklch(var(--secondary));
+  --color-secondary-foreground: oklch(var(--secondary-foreground));
+  --color-muted: oklch(var(--muted));
+  --color-muted-foreground: oklch(var(--muted-foreground));
+  --color-destructive: oklch(var(--destructive));
+  --color-destructive-foreground: oklch(var(--destructive-foreground));
+  --color-success: oklch(var(--success));
+  --color-success-foreground: oklch(var(--success-foreground));
+  --color-warning: oklch(var(--warning));
+  --color-warning-foreground: oklch(var(--warning-foreground));
+  --color-info: oklch(var(--info));
+  --color-info-foreground: oklch(var(--info-foreground));
+  --color-border: oklch(var(--border));
+
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  --border-radius-lg: var(--radius);
+  --border-radius-md: calc(var(--radius) - 2px);
+  --border-radius-sm: calc(var(--radius) - 4px);
+
+  --keyframes-accordion-down: accordion-down 0.2s ease-out;
+  --keyframes-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@layer base {
+  :root {
+    --background: 98% 0 0;
+    --foreground: 20% 0 0;
+    --card: 100% 0 0;
+    --card-foreground: 20% 0 0;
+    --primary: 55% 0.15 260;
+    --primary-foreground: 98% 0 0;
+    --secondary: 75% 0.05 30;
+    --secondary-foreground: 20% 0 0;
+    --muted: 95% 0 0;
+    --muted-foreground: 50% 0 0;
+    --border: 90% 0 0;
+    --destructive: 55% 0.2 25;
+    --destructive-foreground: 98% 0 0;
+    --success: 60% 0.15 145;
+    --success-foreground: 98% 0 0;
+    --warning: 75% 0.15 85;
+    --warning-foreground: 20% 0 0;
+    --info: 65% 0.15 250;
+    --info-foreground: 98% 0 0;
+  }
+
+  .dark {
+    --background: 15% 0 0;
+    --foreground: 98% 0 0;
+    --card: 18% 0 0;
+    --card-foreground: 98% 0 0;
+    --primary: 70% 0.15 260;
+    --primary-foreground: 15% 0 0;
+    --secondary: 80% 0.05 30;
+    --secondary-foreground: 15% 0 0;
+    --muted: 25% 0 0;
+    --muted-foreground: 65% 0 0;
+    --border: 25% 0 0;
+    --destructive: 60% 0.2 25;
+    --destructive-foreground: 98% 0 0;
+    --success: 65% 0.15 145;
+    --success-foreground: 15% 0 0;
+    --warning: 80% 0.15 85;
+    --warning-foreground: 15% 0 0;
+    --info: 70% 0.15 250;
+    --info-foreground: 15% 0 0;
+  }
+}
+
+@layer base {
+  * {
+    border-color: oklch(var(--border));
+  }
+  body {
+    background-color: oklch(var(--background));
+    color: oklch(var(--foreground));
+    font-family: var(--font-body);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+}
