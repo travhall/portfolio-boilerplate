@@ -17,9 +17,13 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface NavigationProps {
   onNavigate?: (path: string, event: MouseEvent<HTMLAnchorElement>) => void;
+  shouldShowEntrance?: boolean;
 }
 
-export function Navigation({ onNavigate }: NavigationProps) {
+export function Navigation({
+  onNavigate,
+  shouldShowEntrance = false,
+}: NavigationProps) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -109,7 +113,16 @@ export function Navigation({ onNavigate }: NavigationProps) {
 
   return (
     <>
-      <nav className="border-b border-border sticky top-0 z-40 bg-background/95 backdrop-blur-sm">
+      <motion.nav
+        className="border-b border-border sticky top-0 z-40 bg-background/85 backdrop-blur-sm"
+        initial={shouldShowEntrance ? { y: -10, opacity: 0 } : false}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          duration: 0.35,
+          ease: "easeOut",
+          delay: 0.1,
+        }}
+      >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link
@@ -181,7 +194,7 @@ export function Navigation({ onNavigate }: NavigationProps) {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu Overlay & Panel */}
       <AnimatePresence>

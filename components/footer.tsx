@@ -25,7 +25,7 @@ export function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="self-start text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
                 </Link>

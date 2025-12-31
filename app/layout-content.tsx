@@ -3,13 +3,14 @@
 import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { PageTransition } from "@/components/page-transition";
 import {
   RouteTransitionProvider,
   StartRouteTransition,
 } from "@/components/route-transition-context";
+import { useInitialLoad } from "@/hooks/use-initial-load";
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const [waitingForEnter, setWaitingForEnter] = useState(false);
   const pendingPathRef = useRef<string | null>(null);
   const mainRef = useRef<HTMLElement>(null);
+  const shouldShowEntrance = useInitialLoad();
 
   const startTransition = useCallback<StartRouteTransition>(
     (nextPath, event) => {
@@ -111,8 +113,15 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   }, [isVisible, displayedPath]);
 
   return (
-    <>
-      <RouteTransitionProvider value={startTransition}>
+    <RouteTransitionProvider value={startTransition}>
+      <motion.div
+        initial={shouldShowEntrance ? { opacity: 0 } : false}
+        animate={{ opacity: 1 }}
+        transition={{
+          duration: 0.6,
+          ease: "easeOut",
+        }}
+      >
         <a
           href="#main-content"
           className="fixed left-4 top-4 z-50 -translate-y-20 rounded-md bg-background px-4 py-2 font-semibold text-foreground shadow focus-visible:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
@@ -123,11 +132,13 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         >
           Skip to main content
         </a>
-        <Navigation onNavigate={startTransition} />
+        <Navigation
+          onNavigate={startTransition}
+          shouldShowEntrance={shouldShowEntrance}
+        />
         <main
           id="main-content"
           ref={mainRef}
-          tabIndex={-1}
           className="relative min-h-screen overflow-hidden"
           aria-live="polite"
           aria-atomic="true"
@@ -145,7 +156,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
           </AnimatePresence>
         </main>
         <Footer />
-      </RouteTransitionProvider>
-    </>
+      </motion.div>
+    </RouteTransitionProvider>
   );
 }
