@@ -89,12 +89,23 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const focusMain = (options?: FocusOptions) => {
+    if (!mainRef.current) {
+      return;
+    }
+    try {
+      mainRef.current.focus(options);
+    } catch {
+      mainRef.current.focus();
+    }
+  };
+
   useEffect(() => {
     if (!isVisible) {
       return;
     }
     const id = requestAnimationFrame(() => {
-      mainRef.current?.focus();
+      focusMain({ preventScroll: true });
     });
     return () => cancelAnimationFrame(id);
   }, [isVisible, displayedPath]);
@@ -107,7 +118,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
           className="fixed left-4 top-4 z-50 -translate-y-20 rounded-md bg-background px-4 py-2 font-semibold text-foreground shadow focus-visible:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           onClick={(event) => {
             event.preventDefault();
-            mainRef.current?.focus();
+            focusMain();
           }}
         >
           Skip to main content

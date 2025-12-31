@@ -45,14 +45,14 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {caseStudies.map((study) => (
             <TransitionLink href={`/work/${study.id}`} key={study.id}>
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+              <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
                 <div className="aspect-video bg-muted relative overflow-hidden">
                   {study.images?.hero && (
                     <Image
                       src={study.images.hero}
                       alt={study.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   )}

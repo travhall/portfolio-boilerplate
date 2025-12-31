@@ -123,7 +123,7 @@ export default async function BlogPost({
 
       {/* Hero Image */}
       {post.image && (
-        <div className="w-full aspect-[21/9] bg-muted overflow-hidden relative">
+        <div className="w-full aspect-21/9 bg-muted overflow-hidden relative">
           <Image
             src={post.image}
             alt={post.title}
@@ -176,7 +176,10 @@ export default async function BlogPost({
             <h2 className="text-3xl font-bold mb-8">Related Posts</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedPosts.map((related) => (
-                <TransitionLink href={`/blog/${related.slug}`} key={related.slug}>
+                <TransitionLink
+                  href={`/blog/${related.slug}`}
+                  key={related.slug}
+                >
                   <Card className="h-full hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
                       <Badge variant="outline" className="mb-3">
