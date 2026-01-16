@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Github, Linkedin, Twitter, Dribbble } from "lucide-react";
 import { profile } from "@/data/profile";
-import { navigationLinks } from "@/data/navigation";
+import { siteConfig } from "@/config/site";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -21,7 +21,7 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Navigation</h3>
             <div className="flex flex-col gap-2">
-              {navigationLinks.map((link) => (
+              {siteConfig.navItems.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

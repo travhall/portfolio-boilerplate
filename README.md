@@ -18,7 +18,8 @@ A modern, production-ready portfolio website boilerplate built with Next.js 16, 
 - ♿ **Accessible** with ARIA labels, focus states, and keyboard navigation
 - 📱 **Fully responsive** mobile-first design
 - ⚡ **Smooth page transitions** with customizable presets
-- 🎯 **SEO optimized** with comprehensive metadata
+- 🎯 **SEO optimized** with centralized `siteConfig`
+- 🔡 **Font Contract Pattern** for easy typography swapping
 
 ### Performance
 - 🚀 **Static generation** for optimal performance
@@ -78,7 +79,27 @@ A modern, production-ready portfolio website boilerplate built with Next.js 16, 
 
 ## 📝 Customization Guide
 
-### 1. Update Profile Information
+### 1. Centralized Site Configuration
+
+Edit `/config/site.ts` to update global site information, navigation, and SEO settings:
+
+```typescript
+export const siteConfig = {
+  name: "Your Portfolio Name",
+  description: "Your site description...",
+  url: "https://your-domain.com",
+  ogImage: "https://your-domain.com/og.jpg",
+  twitterHandle: "@yourusername",
+  navItems: [
+    { href: "/", label: "Home" },
+    { href: "/work", label: "Work" },
+    // ...
+  ],
+  keywords: ["design", "development", "portfolio"],
+};
+```
+
+### 2. Update Profile Information
 
 Edit `/data/profile.ts` to update your personal information:
 
@@ -102,7 +123,7 @@ export const profile = {
 };
 ```
 
-### 2. Add Your Projects
+### 3. Add Your Projects
 
 Edit `/data/case-studies.ts` to add your projects:
 
@@ -139,11 +160,11 @@ export const caseStudies: CaseStudy[] = [
 ];
 ```
 
-### 3. Update Contact Information
+### 4. Update Contact Information
 
 Edit `/data/contact.ts` to customize your contact page.
 
-### 4. Customize Theme Colors
+### 5. Customize Theme Colors
 
 Edit `/app/globals.css` to modify your color scheme:
 
@@ -153,14 +174,25 @@ Edit `/app/globals.css` to modify your color scheme:
   --background: 98% 0 0;
   /* ... other colors */
 }
-
-.dark {
-  --primary: 70% 0.15 260;
-  /* ... dark mode colors */
-}
 ```
 
-### 5. Configure Page Transitions
+### 6. Swapping Fonts (Font Contract Pattern)
+
+Changing fonts is as easy as updating the Google Font import in `/app/layout.tsx`. The rest of the app uses CSS variables (`--font-heading`, `--font-sans`):
+
+1.  **Import new font** in `/app/layout.tsx`.
+2.  **Assign to variable** in font configuration section.
+3.  **Update CSS mapping** in `/app/globals.css` if necessary.
+
+```typescript
+// app/layout.tsx
+const fontSans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+```
+
+### 7. Configure Page Transitions
 
 Edit `/config/transitions.ts` to customize animations:
 
@@ -196,29 +228,25 @@ npm run test:e2e     # Run end-to-end tests (Playwright)
 portfolio-boilerplate/
 ├── app/                      # Next.js App Router
 │   ├── page.tsx             # Home page
-│   ├── layout.tsx           # Root layout with metadata
-│   ├── globals.css          # Global styles
+│   ├── layout.tsx           # Root layout & Font Configuration
+│   ├── globals.css          # Global styles & Font Contract
 │   ├── about/               # About page
 │   ├── contact/             # Contact page
 │   ├── work/                # Work gallery
-│   │   ├── page.tsx         # Work listing
-│   │   └── [id]/            # Case study pages
-│   └── styleguide/          # Component showcase
+│   └── styleguide/          # Expanded Component showcase
 ├── components/              # React components
 │   ├── ui/                  # shadcn/ui components
-│   ├── navigation.tsx       # Navigation bar
-│   ├── footer.tsx           # Footer
-│   ├── theme-provider.tsx   # Theme context
-│   └── page-transition.tsx  # Animation wrapper
-├── data/                    # Static data
-│   ├── profile.ts           # Your profile
-│   ├── case-studies.ts      # Project data
-│   └── contact.ts           # Contact info
-├── config/                  # Configuration
+│   ├── navigation.tsx       # Navigation (consumes siteConfig)
+│   ├── footer.tsx           # Footer (consumes siteConfig)
+│   └── ...
+├── data/                    # User Content
+│   ├── profile.ts           # Bio, stats, experience
+│   ├── case-studies.ts      # Detailed project data
+│   └── contact.ts           # Contact page content
+├── config/                  # Global Configuration
+│   ├── site.ts              # SE0, Nav, and Site Metadata
 │   └── transitions.ts       # Animation config
 ├── lib/                     # Utilities
-│   ├── utils.ts             # Helper functions
-│   └── supabase.ts          # Supabase client
 └── public/                  # Static assets
 ```
 

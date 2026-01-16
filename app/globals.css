@@ -3,7 +3,7 @@
 
 @theme {
   --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --font-sans: var(--font-sans);
 
   --radius: 0.5rem;
 
@@ -94,7 +94,7 @@
   body {
     background-color: oklch(var(--background));
     color: oklch(var(--foreground));
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
   }
   h1,
   h2,

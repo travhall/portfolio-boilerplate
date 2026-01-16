@@ -4,16 +4,19 @@ import { Noto_Serif_Display, Manrope } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutContent } from "./layout-content";
 import { profile } from "@/data/profile";
+import { siteConfig } from "@/config/site";
 
-const notoSerifDisplay = Noto_Serif_Display({
+// --- Font Configuration ---
+// TO CHANGE FONTS: Update these google font imports and the variables below.
+const fontHeading = Noto_Serif_Display({
   subsets: ["latin"],
   variable: "--font-heading",
   display: "swap",
 });
 
-const manrope = Manrope({
+const fontSans = Manrope({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -32,44 +35,42 @@ const themeInitializer = `
 
 export const metadata: Metadata = {
   title: {
-    default: `${profile.name} - ${profile.title}`,
+    default: `${profile.name} | ${profile.title}`,
     template: `%s | ${profile.name}`,
   },
   description: profile.tagline,
   keywords: [
     ...profile.skills,
-    "portfolio",
-    "UX design",
-    "UI development",
-    "web development",
-    "design systems",
+    ...siteConfig.keywords,
   ],
   authors: [{ name: profile.name, url: profile.social.github }],
   creator: profile.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "/",
+    url: siteConfig.url,
     title: `${profile.name} - ${profile.title}`,
     description: profile.tagline,
     siteName: `${profile.name}'s Portfolio`,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: profile.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${profile.name} - ${profile.title}`,
     description: profile.tagline,
-    creator: "@alexrivera",
+    creator: siteConfig.twitterHandle,
+    images: [siteConfig.ogImage],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
 };
 
@@ -86,7 +87,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: themeInitializer }}
         />
       </head>
-      <body className={`${notoSerifDisplay.variable} ${manrope.variable}`}>
+      <body className={`${fontHeading.variable} ${fontSans.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LayoutContent>{children}</LayoutContent>
         </ThemeProvider>

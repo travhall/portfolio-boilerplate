@@ -12,7 +12,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { navigationLinks } from "@/data/navigation";
+import { siteConfig } from "@/config/site";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NavigationProps {
@@ -138,7 +138,7 @@ export function Navigation({
             <div className="flex items-center gap-4">
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center gap-6">
-                {navigationLinks.map((link) => (
+                {siteConfig.navItems.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
@@ -244,7 +244,7 @@ export function Navigation({
                   className="flex flex-col gap-2 p-6"
                   aria-label="Mobile primary"
                 >
-                  {navigationLinks.map((link, index) => (
+                  {siteConfig.navItems.map((link, index) => (
                     <motion.div
                       key={link.href}
                       initial={{ opacity: 0, x: 20 }}
